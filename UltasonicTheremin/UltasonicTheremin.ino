@@ -1,9 +1,9 @@
 // Ultrasonic Theremin
-// Simple Theremin using the HC-SR04
+// Simple Theremin using the HC-SR04 
 
-// setup pins and variables for SRF04 sonar device
-int echoPin = 2;                                // SRF04 echo pin (digital 2)
-int initPin = 3;                                // SRF04 trigger pin (digital 3)
+// setup pins and variables for HC-SR04 sonar device
+int echoPin = 2;                                // HC-SR04 echo pin (digital 2)
+int initPin = 3;                                // HC-SR04 trigger pin (digital 3)
 int speakerPin = 6;                             // Speaker pin connect the other speaker wire to GND
 unsigned long pulseTime = 0;                    // stores the pulse in Micro Seconds
 unsigned long distance = 0;                     // variable for storing the distance (cm) we'll use distance as a switch for the speaker
