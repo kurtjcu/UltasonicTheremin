@@ -1,10 +1,10 @@
 // Ultrasonic Theremin
 // Simple Theremin using the HC-SR04
 
-// setup pins and variables for SRF05 sonar device
+// setup pins and variables for SRF04 sonar device
 int echoPin = 2;                                // SRF04 echo pin (digital 2)
 int initPin = 3;                                // SRF04 trigger pin (digital 3)
-int speakerPin = 6;                             // Speaker pin
+int speakerPin = 6;                             // Speaker pin connect the other speaker wire to GND
 unsigned long pulseTime = 0;                    // stores the pulse in Micro Seconds
 unsigned long distance = 0;                     // variable for storing the distance (cm) we'll use distance as a switch for the speaker
 unsigned long soundDelay = 0;                   // variable for storing the deay needed for the pitch
@@ -16,6 +16,7 @@ void setup() {
   pinMode(initPin, OUTPUT);                     // set init pin 3 as output
   pinMode(echoPin, INPUT);                      // set echo pin 2 as input
 
+  Serial.begin(9600);                           // setup serial out to monitor the pulse time
  } 
 
 // execute
@@ -24,15 +25,13 @@ void loop() {
   delayMicroseconds(10);                        // wait 10 microseconds before turning off
   digitalWrite(initPin, LOW);                   // stop sending the pulse
   pulseTime = pulseIn(echoPin, HIGH);           // Look for a return pulse, it should be high as the pulse goes low-high-low
+  Serial.println(pulseTime);
+  
   distance = pulseTime/58;                      // convert the pulse into distance (cm)
-  soundDelay = pulseTime/3;                     // alter this variable to alter the pitch of the sound emitted
 
-  // make the sound.
-  // check the distance, if over 30cm make no sound
-  if (distance < 30) {
-  digitalWrite(speakerPin, HIGH);
-  delayMicroseconds(soundDelay);
-  digitalWrite(speakerPin, LOW);
-  delayMicroseconds(soundDelay);
+  if (distance < 50) {                          // check the distance, if over 50cm make no sound
+    tone(speakerPin, pulseTime);                // Play the tone using the pulsetime variable as the frequency to play
+  } else {
+    noTone(speakerPin);                         // Stop the tone
   }
 }
